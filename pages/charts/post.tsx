@@ -76,7 +76,7 @@ const steps = [
 
 export default function Post() {
   const { isOpen, onToggle } = useDisclosure();
-  const [supabase, setSupabase] = useState<any>(null);
+  let supabase = {} as any;
   const handleUpload = (filetype: string) => {
     console.log("upload" + filetype);
     if (filetype == "chart") {
@@ -192,7 +192,7 @@ export default function Post() {
 
   useEffect(() => {
     let isMounted = true; // Flag to check if the component is mounted
-    setSupabase(createClient(
+    supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || "",
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
       {
@@ -203,8 +203,9 @@ export default function Post() {
           storage: localStorage,
         },
       }
-    ));
+    );
     async function fetchData() {
+      const isMounted = true; // Flag to check if the component is mounted
       try {
         const { data, error } = await supabase.auth.getSession();
         if (isMounted) {
@@ -247,7 +248,7 @@ export default function Post() {
     return () => {
       isMounted = false; // Clean up the flag on unmount
     };
-  });
+  },[]);
 
   const setDisplayName = () => {
     const displayName = document.getElementById(

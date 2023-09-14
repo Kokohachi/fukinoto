@@ -100,7 +100,7 @@ export default function Header() {
     return () => {
       isMounted = false; // Clean up the flag on unmount
     };
-  });
+  },[]);
 
   return (
     <Box>
