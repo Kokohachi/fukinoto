@@ -14,6 +14,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@huggingface/hub": "^0.8.4",
+    "@sekai-world/sus-analyzer": "^2.2.5",
     "@supabase/auth-helpers-nextjs": "^0.7.3",
     "@supabase/auth-helpers-react": "^0.4.1",
     "@supabase/supabase-js": "^2.31.0",
@@ -23,11 +24,14 @@
     "eslint": "8.46.0",
     "eslint-config-next": "13.4.12",
     "framer-motion": "^10.15.0",
+    "nanoid": "^4.0.2",
     "next": "13.4.12",
+    "next-compose-plugins": "^2.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
     "redux-persist": "^6.0.0",
+    "sonolus-pjsekai-engine-extended": "github:sevenc-nanashi/sonolus-pjsekai-engine-extended#build",
     "typescript": "5.1.6"
   }
 }

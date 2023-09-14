@@ -1,0 +1,20 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: fukinoto
+    src: ./
+    engine: next
+    primary: true
+    public: true
+    presets:
+      env:
+        - name: NEXT_PUBLIC_SUPABASE_URL
+          default: "https://nwpdutungzklcxcudrxd.supabase.co"
+        - name: NEXT_PUBLIC_SUPABASE_ANON_KEY
+          default: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53cGR1dHVuZ3prbGN4Y3VkcnhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTA4MjM3NDIsImV4cCI6MjAwNjM5OTc0Mn0.3zINIo7hLNlr85UygmrfTYXh085env48KTqBBjsyNJ4"
+        - name: NEXT_PUBLIC_HF_TOKEN
+          default: "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"
+        - name: NEXT_PUBLIC_HF_REPONAME
+          default: "yasakoko/fukinoto-database"
+        - name: NEXT_PUBLIC_HOST
+          default: "http://localhost:3000"
