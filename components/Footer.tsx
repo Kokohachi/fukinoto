@@ -7,14 +7,14 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from "@chakra-ui/react";
-import { FaInstagram, FaTwitter, FaYoutube, FaGithub } from "react-icons/fa";
+import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { ReactNode } from "react";
 
 const Logo = (props: any) => {
   return (
     <Text
         fontSize={"lg"}
-        fontWeight={"normal"}
+        fontWeight={"bold"}
         >
             𝔽 ¦ ふきのとう
         </Text>
@@ -58,7 +58,10 @@ export default function Footer() {
     <Box
       bg={useColorModeValue("gray.50", "gray.900")}
       color={useColorModeValue("gray.700", "gray.200")}
-      width={"100%"}
+      position={"absolute"}
+        bottom={"0"}
+        left={"0"}
+        width={"100%"}
     >
       <Container
         as={Stack}
@@ -79,7 +82,7 @@ export default function Footer() {
             <FaYoutube />
           </SocialButton>
           <SocialButton label={"Instagram"} href={"#"}>
-            <FaGithub />
+            <FaInstagram />
           </SocialButton>
         </Stack>
       </Container>

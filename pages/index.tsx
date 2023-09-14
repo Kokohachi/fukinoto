@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div>
+  <html>
+  <body>
     <div className="wrapper">
       <div className="content">
       <Header />
@@ -29,6 +30,29 @@ export default function Home() {
     <footer>
       <Footer />
     </footer>
-  </div>
+  </body>
+  <style jsx>{`
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wrapper {
+    flex: 1;
+  }
+
+  footer {
+    /* Footer styles */
+    flex-shrink: 0;
+    /* Set height for your footer (e.g., height: 100px;) */
+  }
+  `}</style>
+  </html>
   );
 }

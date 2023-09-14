@@ -21,22 +21,23 @@ import {
   CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  AddIcon,
 } from "@chakra-ui/icons";
 
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
 
 import { MdGrass } from "react-icons/md";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
-import { type } from "os";
-
 
 export default function Header() {
   const { isOpen, onToggle } = useDisclosure();
-
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
+    {auth:{persistSession:true}}
+    );
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   const router = useRouter();
@@ -44,24 +45,10 @@ export default function Header() {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
   const [global_name, setGlobalName] = useState("");
-  let supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-  )
+
   useEffect(() => {
     let isMounted = true; // Flag to check if the component is mounted
-    supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-      {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true,
-          storage: localStorage,
-        },
-      }
-    );
+
     async function fetchData() {
       try {
         const { data, error } = await supabase.auth.getSession();
@@ -69,8 +56,7 @@ export default function Header() {
           if (data.session) {
             console.log(data);
 
-            const { data: userData, error: userError } =
-              await supabase.auth.getUser();
+            const { data: userData, error: userError } = await supabase.auth.getUser();
             if (userError) {
               console.log(userError);
             }
@@ -78,12 +64,12 @@ export default function Header() {
               console.log(userData);
               const username = userData.user?.user_metadata?.full_name;
               const avatar = userData.user?.user_metadata?.avatar_url;
-              const global_name =
-                userData.user?.user_metadata?.custom_claims?.global_name;
+              const global_name = userData.user?.user_metadata?.custom_claims?.global_name;
               setUsername(username || "");
               setAvatar(avatar || "");
               setGlobalName(global_name || "");
               setLoggedIn(true);
+
             }
           }
           if (error) {
@@ -101,6 +87,7 @@ export default function Header() {
       isMounted = false; // Clean up the flag on unmount
     };
   }, []);
+
 
   return (
     <Box>
@@ -135,6 +122,7 @@ export default function Header() {
           align="center"
         >
           <Stack direction="column" align="center" spacing={1}>
+
             <Text
               fontFamily={"heading"}
               color={useColorModeValue("gray.800", "white")}
@@ -149,6 +137,7 @@ export default function Header() {
                 譜面企画部の投稿サイト
               </Text>
             )}
+
           </Stack>
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />
@@ -157,88 +146,93 @@ export default function Header() {
         {isMobile && ( // Only show Avatar and Username on mobile screens
           <Spacer />
         )}
-        {!isMobile &&
-          (loggedIn ? (
-            <div>
-              <Stack
-                flex={{ base: 1, md: 0 }}
-                justify={"flex-end"}
-                align={"center"} // Add align prop to center the content
-                direction={"row"}
-                spacing={6}
-              >
-                <Avatar name={username} src={avatar} size={"md"} />
-                <Stack
-                  direction={"column"}
-                  align={"left"}
-                  display={{ base: "none", md: "flex" }}
-                  spacing={0}
-                >
-                  <Text fontSize={"sm"} fontWeight={600}>
-                    {global_name}
-                  </Text>
-                  <Text
-                    fontSize={"sm"}
-                    fontWeight={600}
-                    color={"gray.400"}
-                    align={"center"}
-                  >
-                    @{username}
-                  </Text>
-                </Stack>
+        {!isMobile && (
 
-                <Button
-                  as={"a"}
-                  display={{ base: "none", md: "inline-flex" }}
-                  fontSize={"sm"}
-                  fontWeight={600}
-                  color={"white"}
-                  bg={"pink.400"}
-                  leftIcon={<AddIcon />}
-                  onClick={() => {
-                    router.push("/charts/post");
-                  }}
-                  _hover={{
-                    bg: "pink.300",
-                  }}
-                >
-                  譜面投稿
-                </Button>
-              </Stack>
-            </div>
-          ) : (
-            <div>
-              <Stack
-                flex={{ base: 1, md: 0 }}
-                justify={"flex-end"}
-                align={"center"} // Add align prop to center the content
-                direction={"row"}
-                spacing={6}
-              >
-                <Button
-                  as={"a"}
-                  display={{ base: "none", md: "inline-flex" }}
-                  fontSize={"sm"}
-                  fontWeight={600}
-                  color={"white"}
-                  bg={"pink.400"}
-                  onClick={() => {
 
-                    supabase.auth.signInWithOAuth({
-                      provider: "discord",
-                    });
-                    console.log("pressed");
-                    router.reload();
-                  }}
-                  _hover={{
-                    bg: "pink.300",
-                  }}
-                >
-                  ログイン
-                </Button>
+        (loggedIn)? (
+          <div>
+            <Stack
+              flex={{ base: 1, md: 0 }}
+              justify={"flex-end"}
+              align={"center"} // Add align prop to center the content
+              direction={"row"}
+              spacing={6}
+            >
+              <Avatar
+                name={username}
+                src={avatar}
+                size={"md"}
+              />
+              <Stack
+                direction={"column"}
+                align={"left"}
+                display={{ base: "none", md: "flex" }}
+                spacing={0}
+              >
+                <Text fontSize={"sm"} fontWeight={600}>
+                  {global_name}
+                </Text>
+              <Text
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"gray.400"}
+                align={"center"}
+              >
+                @{username}
+              </Text>
               </Stack>
-            </div>
-          ))}
+
+              <Button
+                as={"a"}
+                display={{ base: "none", md: "inline-flex" }}
+                fontSize={"sm"}
+                fontWeight={600}
+                color={"white"}
+                bg={"pink.400"}
+                onClick={() => {
+                  router.push("/charts/post");
+                }}
+                _hover={{
+                  bg: "pink.300",
+                }}
+              >
+                譜面投稿
+              </Button>
+            </Stack>
+          </div>
+        ) : (
+          <div>
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={"flex-end"}
+            align={"center"} // Add align prop to center the content
+            direction={"row"}
+            spacing={6}
+          >
+
+            <Button
+              as={"a"}
+              display={{ base: "none", md: "inline-flex" }}
+              fontSize={"sm"}
+              fontWeight={600}
+              color={"white"}
+              bg={"pink.400"}
+              onClick={() => {
+                supabase.auth.signInWithOAuth({
+                  provider: "discord",
+                });
+                console.log("pressed");
+                router.reload();
+              }}
+              _hover={{
+                bg: "pink.300",
+              }}
+            >
+              ログイン
+            </Button>
+          </Stack>
+        </div>
+        ))}
       </Flex>
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
