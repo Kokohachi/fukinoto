@@ -100,7 +100,7 @@ export default function Header() {
     return () => {
       isMounted = false; // Clean up the flag on unmount
     };
-  }, []);
+  });
 
   return (
     <Box>
@@ -223,12 +223,7 @@ export default function Header() {
                   color={"white"}
                   bg={"pink.400"}
                   onClick={() => {
-
-                    supabase.auth.signInWithOAuth({
-                      provider: "discord",
-                    });
-                    console.log("pressed");
-                    router.reload();
+                    router.push("/login");
                   }}
                   _hover={{
                     bg: "pink.300",

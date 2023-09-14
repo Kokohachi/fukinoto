@@ -76,8 +76,7 @@ const steps = [
 
 export default function Post() {
   const { isOpen, onToggle } = useDisclosure();
-  let supabase = {} as any;
-
+  const [supabase, setSupabase] = useState<any>(null);
   const handleUpload = (filetype: string) => {
     console.log("upload" + filetype);
     if (filetype == "chart") {
@@ -190,9 +189,10 @@ export default function Post() {
   const [hid, setHid] = useState("");
   const handleChange = (value: any) => setValue(value);
 
+
   useEffect(() => {
     let isMounted = true; // Flag to check if the component is mounted
-    supabase = createClient(
+    setSupabase(createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || "",
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
       {
@@ -203,7 +203,7 @@ export default function Post() {
           storage: localStorage,
         },
       }
-    );
+    ));
     async function fetchData() {
       try {
         const { data, error } = await supabase.auth.getSession();
@@ -247,7 +247,7 @@ export default function Post() {
     return () => {
       isMounted = false; // Clean up the flag on unmount
     };
-  }, []);
+  });
 
   const setDisplayName = () => {
     const displayName = document.getElementById(
@@ -647,8 +647,7 @@ export default function Post() {
                         <SliderThumb
                           fontSize="sm"
                           boxSize="32px"
-                          children={value}
-                        />
+                        >{value}</SliderThumb>
                       </Slider>
                     </Flex>
                     <Checkbox

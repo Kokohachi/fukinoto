@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function Login() {
-    if (typeof window !== "undefined") {
+
     const router = useRouter();
     const { redirectTo } = router.query;
     const redirectURL = process.env.NEXT_PUBLIC_HOST || "" + (redirectTo ? redirectTo : "/")
@@ -18,5 +18,4 @@ export default function Login() {
         
     }
     )
-}
 }
