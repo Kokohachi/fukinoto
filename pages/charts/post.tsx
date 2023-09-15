@@ -174,6 +174,9 @@ export default function Post() {
       setTitle(metadata.TITLE || "");
       setArtist(metadata.ARTIST || "");
       setAuthor(metadata.DESIGNER || "");
+      setShowname(
+        useHID? (metadata.DESIGNER || "") + "⧉" + hid : (metadata.DESIGNER || "") + "@" + username
+      );
     };
   };
   const { isOpen, onOpen, onClose } = useDisclosure();
