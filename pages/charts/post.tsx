@@ -52,12 +52,26 @@ import {
   TagProps,
   TagCloseButton,
   Select,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Progress,
 } from "@chakra-ui/react";
 import * as SusAnalyzer from "@sekai-world/sus-analyzer";
 import { customAlphabet } from "nanoid";
-import { createRepo, uploadFiles, deleteFile, deleteRepo, listFiles, whoAmI } from "@huggingface/hub";
+import {
+  createRepo,
+  uploadFiles,
+  deleteFile,
+  deleteRepo,
+  listFiles,
+  whoAmI,
+} from "@huggingface/hub";
 import type { RepoDesignation, Credentials } from "@huggingface/hub";
-
 
 import {
   PiFileTextLight,
@@ -75,7 +89,6 @@ const steps = [
 ];
 
 export default function Post() {
-  const { isOpen, onToggle } = useDisclosure();
   let supabase = {} as any;
   const handleUpload = (filetype: string) => {
     console.log("upload" + filetype);
@@ -163,6 +176,7 @@ export default function Post() {
       setAuthor(metadata.DESIGNER || "");
     };
   };
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [chartFile, setChartFile] = useState<File | null>(null);
   const [audioFile, setAudioFile] = useState<File | null>(null);
@@ -187,8 +201,10 @@ export default function Post() {
   const [textpl, setTextpl] = useState(0);
   const [tags, setTags] = useState<string[]>([]);
   const [hid, setHid] = useState("");
+  const [subStatus, setSubStatus] = useState("投稿を開始しています...");
+  const [uploaded, setUploaded] = useState(false);
+  const [showname, setShowname] = useState("");
   const handleChange = (value: any) => setValue(value);
-
 
   useEffect(() => {
     let isMounted = true; // Flag to check if the component is mounted
@@ -230,8 +246,7 @@ export default function Post() {
               setLoggedIn(true);
               setUID(UID || "");
             }
-          }
-          else {
+          } else {
             window.location.href = "/login?redirectTo=/charts/post";
           }
           if (error) {
@@ -248,25 +263,7 @@ export default function Post() {
     return () => {
       isMounted = false; // Clean up the flag on unmount
     };
-  },[]);
-
-  const setDisplayName = () => {
-    const displayName = document.getElementById(
-      "display_name"
-    ) as HTMLInputElement;
-    const authorName = document.getElementById(
-      "author_name"
-    ) as HTMLInputElement;
-    const hid = document.getElementById("hid") as HTMLInputElement;
-    if (displayName && authorName && hid) {
-      if (!useHID) {
-        displayName.innerText = authorName.value + "⧉" + hid.value;
-      } else {
-        displayName.innerText = authorName.value + "@" + username;
-      }
-    }
-  };
-
+  }, []);
 
   if (typeof window === "object") {
     const tag_input = document.getElementById("tag_input") as HTMLInputElement;
@@ -291,15 +288,22 @@ export default function Post() {
     };
   }
 
-  const subscribeChart = async() => {
-    console.log("started")
+  const subscribeChart = async () => {
+    console.log("started");
+    setSubStatus("投稿を開始しています...");
     const nanoid = customAlphabet(
       "23456789ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz",
       10
     );
     const chartID = nanoid();
-    const repo: RepoDesignation = { type: "dataset", name: process.env.NEXT_PUBLIC_HF_REPONAME || "" };
-    const credentials: Credentials = { accessToken: process.env.NEXT_PUBLIC_HF_TOKEN || ""};
+    setSubStatus("ファイルをアップロードしています...");
+    const repo: RepoDesignation = {
+      type: "dataset",
+      name: process.env.NEXT_PUBLIC_HF_REPONAME || "",
+    };
+    const credentials: Credentials = {
+      accessToken: process.env.NEXT_PUBLIC_HF_TOKEN || "",
+    };
     const chartFileSuffix = chartName.split(".")[1];
     await uploadFiles({
       repo,
@@ -321,13 +325,18 @@ export default function Post() {
       ],
     });
     console.log("uploaded");
-    await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/upload/chart/?chartID=${chartID}&suffix=${chartFileSuffix}`);
+    setSubStatus("ファイルをアップロードしました...");
+    await fetch(
+      `${process.env.NEXT_PUBLIC_HOST}/api/upload/chart/?chartID=${chartID}&suffix=${chartFileSuffix}`
+    );
+    setSubStatus("譜面データの変換に成功しました...");
+    setSubStatus("譜面情報を登録しています...");
     console.log("nextloaded");
     const author_id = !useHID ? username : hid;
     const supabasecli = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-    )
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+    );
     const { data, error } = await supabasecli.from("charts").insert([
       {
         id: chartID,
@@ -345,8 +354,12 @@ export default function Post() {
         activated: true,
         user: uid,
         HID: useHID,
-        publish_at: null
-  }])};
+        publish_at: null,
+      },
+    ]);
+    setSubStatus("譜面情報を登録しました！");
+    setUploaded(true);
+  };
   return (
     <div>
       <Header />
@@ -359,7 +372,7 @@ export default function Post() {
         mb={{ base: "4", lg: "0" }}
       >
         {!isMobile && (
-          <Stepper size="lg" index={activeStep} colorScheme="cyan">
+          <Stepper size="lg" index={activeStep} colorScheme="green">
             {steps.map((step, index) => (
               <Step
                 key={index}
@@ -462,7 +475,6 @@ export default function Post() {
                   }
                   onClick={() => {
                     setActiveStep(1);
-                    onToggle();
                   }}
                 >
                   次へ
@@ -521,7 +533,14 @@ export default function Post() {
                       placeholder="譜面作者"
                       id="author_name"
                       onChange={() => {
-                        setDisplayName();
+                        setShowname(
+                          (
+                            document.getElementById(
+                              "author_name"
+                            ) as HTMLInputElement
+                          ).value
+                          + "@" + username
+                        );
                         setAuthor(
                           (
                             document.getElementById(
@@ -550,7 +569,7 @@ export default function Post() {
                   </Link>
                 )}
                 <Stack>
-                  <FormControl isRequired>
+                  <FormControl isDisabled>
                     <HStack>
                       <FormLabel>隠れID</FormLabel>
                       <Text fontSize="xs" color="gray.500" marginLeft="auto">
@@ -560,7 +579,7 @@ export default function Post() {
                           display="inline"
                           fontWeight="bold"
                           id="display_name"
-                        ></Text>
+                        >{showname}</Text>
                         と表示されます
                       </Text>
                     </HStack>
@@ -569,7 +588,14 @@ export default function Post() {
                       colorScheme="pink"
                       onChange={(value) => {
                         setUseHID(value == "2");
-                        setDisplayName();
+                        setShowname(
+                          (
+                            document.getElementById(
+                              "author_name"
+                            ) as HTMLInputElement
+                          ).value
+                          + "⧉" + hid
+                        );
                       }}
                     >
                       <Stack spacing={5} direction="row">
@@ -590,7 +616,14 @@ export default function Post() {
                             id="hid"
                             isRequired={useHID}
                             onChange={() => {
-                              setDisplayName();
+                              setShowname(
+                                (
+                                  document.getElementById(
+                                    "author_name"
+                                  ) as HTMLInputElement
+                                ).value
+                                + "⧉" + hid
+                              );
                               setHid(
                                 (
                                   document.getElementById(
@@ -645,10 +678,9 @@ export default function Post() {
                         <SliderTrack>
                           <SliderFilledTrack />
                         </SliderTrack>
-                        <SliderThumb
-                          fontSize="sm"
-                          boxSize="32px"
-                        >{value}</SliderThumb>
+                        <SliderThumb fontSize="sm" boxSize="32px">
+                          {value}
+                        </SliderThumb>
                       </Slider>
                     </Flex>
                     <Checkbox
@@ -791,12 +823,30 @@ export default function Post() {
                   chartFile == null || audioFile == null || imageFile == null
                 }
                 onClick={() => {
+                  onOpen();
                   subscribeChart();
                 }}
               >
                 投稿する
               </Button>
             </SimpleGrid>
+            <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} closeOnEsc={false}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>投稿中...</ModalHeader>
+                <ModalBody>
+                <Progress size='xs' isIndeterminate colorScheme="green" hidden={uploaded} />
+                  {subStatus}
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="green" mr={3} onClick={
+                    () => {location.href = "/"}
+                  } isDisabled={!uploaded}>
+                    トップへ
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Box>
         )}
       </Box>
