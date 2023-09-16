@@ -82,6 +82,8 @@ import {
 import { useState, useEffect } from "react";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import Footer from "@/components/Footer";
+import { supabaseGetUser } from "@/hooks/supabase/auth";
+import sharp from "sharp";
 
 const steps = [
   { title: "ファイルの投稿", description: "譜面、音源、ジャケットの投稿" },
@@ -210,63 +212,20 @@ export default function Post() {
   const handleChange = (value: any) => setValue(value);
 
   useEffect(() => {
-    let isMounted = true; // Flag to check if the component is mounted
-    supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-      {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true,
-          storage: localStorage,
-        },
-      }
-    );
-    async function fetchData() {
-      const isMounted = true; // Flag to check if the component is mounted
-      try {
-        const { data, error } = await supabase.auth.getSession();
-        if (isMounted) {
-          if (data.session) {
-            console.log(data);
-
-            const { data: userData, error: userError } =
-              await supabase.auth.getUser();
-            if (userError) {
-              console.log(userError);
-            }
-            if (userData.user) {
-              console.log(userData);
-              const UID = userData.user?.id;
-              const username = userData.user?.user_metadata?.full_name;
-              const avatar = userData.user?.user_metadata?.avatar_url;
-              const global_name =
-                userData.user?.user_metadata?.custom_claims?.global_name;
-              setUsername(username || "");
-              setAvatar(avatar || "");
-              setGlobalName(global_name || "");
-              setLoggedIn(true);
-              setUID(UID || "");
-            }
-          } else {
-            window.location.href = "/login?redirectTo=/charts/post";
-          }
-          if (error) {
-            console.log(error);
-          }
-        }
-      } catch (error) {
-        console.log(error);
-      }
+  supabaseGetUser().then((user) => {
+    if (user) {
+      console.log(user);
+      setUsername(user.user_metadata.full_name || "");
+      setAvatar(user.user_metadata.avatar_url || "");
+      setGlobalName(user.user_metadata.custom_claims.global_name || "");
+      setLoggedIn(true);
+      setUID(user.id || "");
+    } else {
+      location.href = "/login";
     }
-
-    fetchData();
-
-    return () => {
-      isMounted = false; // Clean up the flag on unmount
-    };
-  }, []);
+  });
+  }
+  , []);
 
   if (typeof window === "object") {
     const tag_input = document.getElementById("tag_input") as HTMLInputElement;
@@ -279,7 +238,6 @@ export default function Post() {
               tag_input.value = "";
               return;
             }
-
             setTextpl(document.getElementById("tag")?.clientWidth || 0);
             setTags([...tags, tag_input.value]);
             tag_input.value = "";

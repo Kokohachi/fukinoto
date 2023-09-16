@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-
+import { UUID } from "crypto";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL || "",
@@ -9,7 +9,7 @@ const supabase = createClient(
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: true,
-      storage: localStorage? localStorage : undefined,
+      storage: typeof localStorage !== 'undefined' ? localStorage : undefined,
     },
   }
 );
@@ -91,6 +91,29 @@ async function _supabaseAddChart(chartID: string, title: string, artist: string,
 
 export function supabaseAddChart(chartID: string, title: string, artist: string, author: string, author_id: string, difficulty: number, description: string, event: string, tags: string, useHID: boolean, uid: string) {
   _supabaseAddChart(chartID, title, artist, author, author_id, difficulty, description, event, tags, useHID, uid).then((data) => {
+    return data;
+  })
+}
+
+export async function _supabaseGetUserCharts() {
+
+  const user = await _supabaseGetUser();
+  if (!user) {
+    return null;
+  }
+  const uid = user.id;
+  const { data, error } = await supabase.from("charts").select("*").eq("user", uid);
+  if (error) {
+    return error;
+  }
+  if (data) {
+    return data;
+  }
+}
+
+export function supabaseGetUserCharts() {
+  console.log();
+  return _supabaseGetUserCharts().then((data) => {
     return data;
   })
 }
