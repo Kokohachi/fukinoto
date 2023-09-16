@@ -8,6 +8,9 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Grid,
+  GridItem,
+  HStack,
   Heading,
   Image,
   SimpleGrid,
@@ -15,7 +18,15 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import { BsHash, BsPencil, BsMusicNote } from "react-icons/bs";
+import {
+  BsHash,
+  BsPencil,
+  BsMusicNote,
+  BsFillLockFill,
+  BsPencilSquare,
+  BsFillUnlockFill,
+  BsCalendarDate
+} from "react-icons/bs";
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [chartData, setChartData] = useState<any>(null);
@@ -35,7 +46,7 @@ export default function Dashboard() {
       <Header />
       <Box
         as="main"
-        maxW="5xl"
+        maxW="100%"
         px={{ base: "4", lg: "8" }}
         py={{ base: "4", lg: "8" }}
       >
@@ -52,12 +63,9 @@ export default function Dashboard() {
             投稿譜面
           </Text>
         </Stack>
-        <Stack
-          spacing={{ base: "4", lg: "4" }}
-          maxW={{ lg: "2xl" }}
-          textAlign="left"
-          align="left"
-        >
+        <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+        {chartData?.map((chart: any) => (
+          <GridItem width={{ base: "100%", sm: "2xl" }} key={chart.id}>
           <Card
             direction={{ base: "column", sm: "row" }}
             overflow="hidden"
@@ -66,38 +74,45 @@ export default function Dashboard() {
             <Image
               objectFit="cover"
               maxW={{ base: "100%", sm: "200px" }}
-              src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+              src={`${process.env.NEXT_PUBLIC_HOST}/api/charts/image/?id=${chart.id}`}
               alt="Caffe Latte"
             />
 
-            <Stack>
+            <HStack>
               <CardBody>
-                <Heading size="md" mb="2">譜面タイトル</Heading>
-                <Text py="2" display={"flex"} alignItems={"center"}>
+                <Heading size="md" mb="2">{chart.title}</Heading>
+                <Text py="1" display={"flex"} alignItems={"center"}>
                     <BsMusicNote />
-                    <Text as="span" pl={2}>作曲者名</Text>
+                    <Text as="span" pl={2}>{chart.artist}</Text>
                 </Text>
-                <Text py="2" display={"flex"} alignItems={"center"}>
+                <Text py="1" display={"flex"} alignItems={"center"}>
                   <BsPencil display="inline" />
-                  <Text as="span" pl={2}>譜面作者名</Text>
+                  <Text as="span" pl={2}>{chart.author}</Text>
                 </Text>
-                <Text py="2" display={"flex"} alignItems={"center"}>
+                <Text py="1" display={"flex"} alignItems={"center"}>
                   <BsHash display="inline" />
-                  <Text as="span" pl={2}>譜面ID</Text>
+                  <Text as="span" pl={2}>{chart.id}</Text>
+                </Text>
+                <Text py="1" display={"flex"} alignItems={"center"}>
+                  <BsCalendarDate display="inline" />
+                  <Text as="span" pl={2}>{new Date(chart.created_at).toLocaleString()}</Text>
                 </Text>
               </CardBody>
-
-              <CardFooter>
-                <Button variant="ghost" colorScheme="blue">
+              <CardBody>
+                <Button variant="solid" colorScheme="pink" isDisabled={true} mb={2} leftIcon={<BsFillLockFill />}>
                   公開設定
                 </Button>
-                <Button variant="ghost" colorScheme="blue">
+                <Button variant="solid" colorScheme="pink" mb={2} isDisabled={true} leftIcon={<BsPencilSquare />}>
                   譜面編集
                 </Button>
-              </CardFooter>
-            </Stack>
+              </CardBody>
+
+
+            </HStack>
           </Card>
-        </Stack>
+          </GridItem>
+        ))}
+        </Grid>
       </Box>
       <Footer />
     </div>
