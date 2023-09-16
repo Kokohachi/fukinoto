@@ -195,7 +195,7 @@ export default function Post() {
   const [artist, setArtist] = useState("");
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
-  const [event, setEvent] = useState("");
+  const [event, setEvent] = useState("1");
   const isMobile = useBreakpointValue({ base: true, lg: false });
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -748,8 +748,8 @@ export default function Post() {
                             .value
                         )
                       }
+                      value={event}
                     >
-                      <option value="0">なし</option>
                       <option value="1">ギミック譜面投稿祭</option>
                     </Select>
                   </FormControl>

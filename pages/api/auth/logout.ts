@@ -1,13 +1,9 @@
-import { SupabaseClient  } from "@supabase/supabase-js";
-import { NextApiRequest, NextApiResponse } from "next";
+import { supabaseLogout } from "@/hooks/supabase/auth";
+import { NextApiHandler } from "next";
 
-const supabase = new SupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "");
+const handler: NextApiHandler = async (req, res) => {
+    await supabaseLogout();
+    res.redirect("/");
+    };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    
-    supabase.auth.signOut().then((error) => {
-        console.log(error)
-        res.redirect('/')
-    }
-    )
-}
+export default handler;

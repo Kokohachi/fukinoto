@@ -13,6 +13,7 @@ export default function Home() {
         maxW="5xl"
         px={{ base: "4", lg: "8" }}
         py={{ base: "4", lg: "8" }}
+        mb={"30%"}
       >
 
           <Stack
