@@ -27,6 +27,7 @@ const config = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+
 };
 
 module.exports = config;
