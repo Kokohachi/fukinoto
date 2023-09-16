@@ -15,6 +15,7 @@ import {
   useDisclosure,
   Spacer,
   Avatar,
+  HStack,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -33,7 +34,6 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { type } from "os";
 
-
 export default function Header() {
   const { isOpen, onToggle } = useDisclosure();
 
@@ -46,8 +46,8 @@ export default function Header() {
   const [global_name, setGlobalName] = useState("");
   let supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-  )
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+  );
   useEffect(() => {
     let isMounted = true; // Flag to check if the component is mounted
     supabase = createClient(
@@ -100,7 +100,7 @@ export default function Header() {
     return () => {
       isMounted = false; // Clean up the flag on unmount
     };
-  },[]);
+  }, []);
 
   return (
     <Box>
@@ -167,25 +167,123 @@ export default function Header() {
                 direction={"row"}
                 spacing={6}
               >
-                <Avatar name={username} src={avatar} size={"md"} />
-                <Stack
-                  direction={"column"}
-                  align={"left"}
-                  display={{ base: "none", md: "flex" }}
-                  spacing={0}
-                >
-                  <Text fontSize={"sm"} fontWeight={600}>
-                    {global_name}
-                  </Text>
-                  <Text
-                    fontSize={"sm"}
-                    fontWeight={600}
-                    color={"gray.400"}
-                    align={"center"}
+                <Popover trigger={"hover"} placement={"bottom-start"}>
+                  <PopoverTrigger>
+                    <HStack>
+                      <Avatar name={username} src={avatar} size={"md"} />
+                      <Stack
+                        direction={"column"}
+                        align={"left"}
+                        display={{ base: "none", md: "flex" }}
+                        spacing={0}
+                      >
+                        <Text fontSize={"sm"} fontWeight={600}>
+                          {global_name}
+                        </Text>
+                        <Text
+                          fontSize={"sm"}
+                          fontWeight={600}
+                          color={"gray.400"}
+                          align={"center"}
+                        >
+                          @{username}
+                        </Text>
+                      </Stack>
+                    </HStack>
+                  </PopoverTrigger>
+                  <PopoverContent
+                    border={0}
+                    boxShadow={"xl"}
+                    bg={useColorModeValue("white", "gray.800")}
+                    p={4}
+                    rounded={"xl"}
+                    minW={"sm"}
                   >
-                    @{username}
-                  </Text>
-                </Stack>
+                    <Box
+                      as="a"
+                      href={"/user/dashboard"}
+                      role={"group"}
+                      display={"block"}
+                      p={2}
+                      rounded={"md"}
+                      _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
+                    >
+                      <Stack direction={"row"} align={"center"}>
+                        <Box>
+                          <Text
+                            transition={"all .3s ease"}
+                            _groupHover={{ color: "pink.400" }}
+                            fontWeight={500}
+                          >
+                            ダッシュボード
+                          </Text>
+                          <Text fontSize={"sm"}>
+                            {"投稿譜面等が確認できます"}
+                          </Text>
+                        </Box>
+                        <Flex
+                          transition={"all .3s ease"}
+                          transform={"translateX(-10px)"}
+                          opacity={0}
+                          _groupHover={{
+                            opacity: "100%",
+                            transform: "translateX(0)",
+                          }}
+                          justify={"flex-end"}
+                          align={"center"}
+                          flex={1}
+                        >
+                          <Icon
+                            color={"pink.400"}
+                            w={5}
+                            h={5}
+                            as={ChevronRightIcon}
+                          />
+                        </Flex>
+                      </Stack>
+                    </Box>
+                    <Box
+                      as="a"
+                      onClick={async () => {
+                        await supabase.auth.signOut();
+                        router.push("/");
+                        router.reload();
+                      }
+                      }
+                      role={"group"}
+                      display={"block"}
+                      p={2}
+                      rounded={"md"}
+                      _hover={{ bg: useColorModeValue("red.50", "gray.900") }}
+                    >
+                      <Stack direction={"row"} align={"center"}>
+                        <Box>
+                          <Text
+                            transition={"all .3s ease"}
+                            _groupHover={{ color: "red.400" }}
+                            fontWeight={500}
+                            color={"red.500"}
+                          >
+                            ログアウト
+                          </Text>
+                        </Box>
+                        <Flex
+                          transition={"all .3s ease"}
+                          transform={"translateX(-10px)"}
+                          opacity={0}
+                          _groupHover={{
+                            opacity: "100%",
+                            transform: "translateX(0)",
+                          }}
+                          justify={"flex-end"}
+                          align={"center"}
+                          flex={1}
+                        >
+                        </Flex>
+                      </Stack>
+                    </Box>
+                  </PopoverContent>
+                </Popover>
 
                 <Button
                   as={"a"}
