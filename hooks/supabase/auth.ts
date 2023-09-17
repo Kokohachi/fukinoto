@@ -104,7 +104,7 @@ export async function _supabaseGetUserCharts() {
   const uid = user.id;
   const { data, error } = await supabase.from("charts").select("*").eq("user", uid);
   if (error) {
-    return error;
+    return error as any;
   }
   if (data) {
     return data;

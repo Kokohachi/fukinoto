@@ -82,7 +82,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
         });
         }
     uploadChart().then(() => {
-        res.send("success");
         return res.status(200).json({status: "success"})
         });
   });

@@ -287,6 +287,7 @@ export default function Post() {
     });
     console.log("uploaded");
     setSubStatus("ファイルをアップロードしました...");
+    setSubStatus("譜面データを変換しています...");
     await fetch(
       `${process.env.NEXT_PUBLIC_HOST}/api/upload/chart/?chartID=${chartID}&suffix=${chartFileSuffix}`
     );
@@ -320,6 +321,7 @@ export default function Post() {
     ]);
     setSubStatus("譜面情報を登録しました！");
     setUploaded(true);
+    location.href = "/user/dashboard";
   };
   return (
     <div>
@@ -791,21 +793,15 @@ export default function Post() {
                 投稿する
               </Button>
             </SimpleGrid>
-            <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} closeOnEsc={false}>
+            <Modal isOpen={isOpen} onClose={onClose} closeOnOverlayClick={false} closeOnEsc={false} isCentered>
               <ModalOverlay />
               <ModalContent>
                 <ModalHeader>投稿中...</ModalHeader>
                 <ModalBody>
+                {subStatus}
                 <Progress size='xs' isIndeterminate colorScheme="green" hidden={uploaded} />
-                  {subStatus}
+
                 </ModalBody>
-                <ModalFooter>
-                  <Button colorScheme="green" mr={3} onClick={
-                    () => {location.href = "/"}
-                  } isDisabled={!uploaded}>
-                    トップへ
-                  </Button>
-                </ModalFooter>
               </ModalContent>
             </Modal>
           </Box>
