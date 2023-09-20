@@ -6,11 +6,11 @@ import {
   Button,
   Stack,
   Collapse,
+  useColorModeValue,
   Icon,
   Popover,
   PopoverTrigger,
   PopoverContent,
-  useColorModeValue,
   useBreakpointValue,
   useDisclosure,
   Spacer,
@@ -25,7 +25,6 @@ import {
   AddIcon,
 } from "@chakra-ui/icons";
 
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
 
 import { MdGrass } from "react-icons/md";
 import Link from "next/link";
@@ -33,6 +32,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useEffect } from "react";
 import { type } from "os";
+import { supabaseGetUser, supabaseLogout } from "@/hooks/supabase/auth";
 
 export default function Header() {
   const { isOpen, onToggle } = useDisclosure();
@@ -44,59 +44,23 @@ export default function Header() {
   const [username, setUsername] = useState("");
   const [avatar, setAvatar] = useState("");
   const [global_name, setGlobalName] = useState("");
-  let supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
-  );
+  const logo = useBreakpointValue({ base: "𝔽 ", md: "𝔽 ¦ ふきのとう" })
   useEffect(() => {
     let isMounted = true; // Flag to check if the component is mounted
-    supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL || "",
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
-      {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true,
-          storage: localStorage,
-        },
-      }
-    );
-    async function fetchData() {
-      try {
-        const { data, error } = await supabase.auth.getSession();
+    supabaseGetUser().then((user) => {
+      if (user) {
         if (isMounted) {
-          if (data.session) {
-            console.log(data);
-
-            const { data: userData, error: userError } =
-              await supabase.auth.getUser();
-            if (userError) {
-              console.log(userError);
-            }
-            if (userData.user) {
-              console.log(userData);
-              const username = userData.user?.user_metadata?.full_name;
-              const avatar = userData.user?.user_metadata?.avatar_url;
-              const global_name =
-                userData.user?.user_metadata?.custom_claims?.global_name;
-              setUsername(username || "");
-              setAvatar(avatar || "");
-              setGlobalName(global_name || "");
-              setLoggedIn(true);
-            }
-          }
-          if (error) {
-            console.log(error);
-          }
+          setLoggedIn(true);
+          setUsername(user.user_metadata?.full_name);
+          setAvatar(user.user_metadata?.avatar_url);
+          setGlobalName(user.user_metadata?.custom_claims?.global_name);
         }
-      } catch (error) {
-        console.log(error);
+      } else {
+        if (isMounted) {
+          setLoggedIn(false);
+        }
       }
-    }
-
-    fetchData();
-
+    });
     return () => {
       isMounted = false; // Clean up the flag on unmount
     };
@@ -141,7 +105,7 @@ export default function Header() {
               fontSize={{ base: "18px", md: "18px" }}
             >
               <Link href="/">
-                {useBreakpointValue({ base: "𝔽 ", md: "𝔽 ¦ ふきのとう" })}
+                {logo}
               </Link>
             </Text>
             {!isMobile && (
@@ -194,7 +158,7 @@ export default function Header() {
                   <PopoverContent
                     border={0}
                     boxShadow={"xl"}
-                    bg={useColorModeValue("white", "gray.800")}
+                    bg={"white"}
                     p={4}
                     rounded={"xl"}
                     minW={"sm"}
@@ -206,7 +170,7 @@ export default function Header() {
                       display={"block"}
                       p={2}
                       rounded={"md"}
-                      _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
+                      _hover={{ bg: "pink.50" }}
                     >
                       <Stack direction={"row"} align={"center"}>
                         <Box>
@@ -245,7 +209,7 @@ export default function Header() {
                     <Box
                       as="a"
                       onClick={async () => {
-                        await supabase.auth.signOut();
+                        await supabaseLogout();
                         router.push("/");
                         router.reload();
                       }
@@ -254,7 +218,7 @@ export default function Header() {
                       display={"block"}
                       p={2}
                       rounded={"md"}
-                      _hover={{ bg: useColorModeValue("red.50", "gray.900") }}
+                      _hover={{ bg: "red.50" }}
                     >
                       <Stack direction={"row"} align={"center"}>
                         <Box>

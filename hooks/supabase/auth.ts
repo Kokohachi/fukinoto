@@ -117,3 +117,35 @@ export function supabaseGetUserCharts() {
     return data;
   })
 }
+
+export async function _supabaseGetChart(id: string) {
+  const { data, error } = await supabase.from("charts").select("*").eq("id", id);
+  if (error) {
+    return error as any;
+  }
+  if (data) {
+    return data;
+  }
+}
+
+export function supabaseGetChart(id: string) {
+  return _supabaseGetChart(id).then((data) => {
+    return data;
+  })
+}
+
+export async function _supabaseUpdateChart(id: string, title: string, artist: string, author: string, author_id: string, difficulty: number, description: string, event: string, tags: string, useHID: boolean, uid: string) {
+  const { data, error } = await supabase.from("charts").update({ title: title, artist: artist, author: author, author_id: author_id, difficulty: difficulty, desc: description, event: event, tags: tags, HID: useHID }).eq("id", id);
+  if (error) {
+    return error as any;
+  }
+  if (data) {
+    return data;
+  }
+}
+
+export function supabaseUpdateChart(id: string, title: string, artist: string, author: string, author_id: string, difficulty: number, description: string, event: string, tags: string, useHID: boolean, uid: string) {
+  return _supabaseUpdateChart(id, title, artist, author, author_id, difficulty, description, event, tags, useHID, uid).then((data) => {
+    return data;
+  })
+}

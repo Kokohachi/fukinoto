@@ -42,6 +42,9 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "eslint": "^8.49.0",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "i": "^0.3.7",
     "localstorage-polyfill": "^1.0.1",
     "npm": "^10.1.0"

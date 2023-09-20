@@ -31,6 +31,7 @@ import {
   Input,
   Checkbox,
   FormHelperText,
+  Container,
 } from "@chakra-ui/react";
 
 import {
@@ -83,10 +84,10 @@ export default function Dashboard() {
             投稿譜面
           </Text>
         </Stack>
-        <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+        <Grid templateColumns="repeat(2, 1fr)" gap={6} maxW={ "100%" }>
           {chartData?.map((chart: any) => (
-            <>
-              <GridItem width={{ base: "100%", sm: "2xl" }} key={chart.id}>
+            <Box key={chart.id} maxW={{ base: "100%", sm: "2xl" }}>
+              <GridItem width={{ base: "100%", sm: "2xl" }}>
                 <Card
                   direction={{ base: "column", sm: "row" }}
                   overflow="hidden"
@@ -143,13 +144,13 @@ export default function Dashboard() {
                         variant="solid"
                         colorScheme="pink"
                         mb={2}
-                        isDisabled={true}
+                        isDisabled={false}
                         leftIcon={<BsPencilSquare />}
                         onClick={() => {
                           window.location.href = `/charts/edit/${chart.id}`;
                         }}
                       >
-                        開発中
+                        譜面編集
                       </Button>
                     </CardBody>
                   </HStack>
@@ -219,7 +220,7 @@ export default function Dashboard() {
                   </ModalFooter>
                 </ModalContent>
               </Modal>
-            </>
+            </Box>
           ))}
 
         </Grid>
