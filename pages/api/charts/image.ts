@@ -35,6 +35,10 @@ const getImage: NextApiHandler = async (req, res) => {
           return;
       }
       image_data.arrayBuffer().then((buffer) => {
+          //content-type: image/png
+          res.setHeader("content-type", "image/png");
+          //file name: chartID.png
+            res.setHeader("content-disposition", `attachment; filename=${chartID}.png`);
           res.status(200).send(Buffer.from(buffer));
       });
 }
