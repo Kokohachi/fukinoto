@@ -82,7 +82,7 @@ export default async function handler(
         },
         configuration: {
           "hash": "b0cddc8d80298a6d10fa8db560dcf35439495a02",
-          "url": "/sonolus/assets/backgrounds/BackgroundConfiguration",
+          "url": "https://cc.sevenc7c.com/sonolus/assets/backgrounds/BackgroundConfiguration",
           "type": "BackgroundConfiguration"
       },
         playData: {
