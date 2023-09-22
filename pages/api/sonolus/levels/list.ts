@@ -30,20 +30,24 @@ export default async function handler(
                 "rating": chart.difficulty,
                 "version": 1,
                 "cover": {
+                    hash: "",
                     type: "LevelCover",
-                    url: `${process.env.NEXT_PUBLIC_HOST}/api/charts/image?id=${chart.id}`
+                    url: `${process.env.NEXT_PUBLIC_HOST}api/charts/image?id=${chart.id}`
                 },
                 "bgm": {
+                    hash: "",
                     type: "LevelBgm",
-                    url: `${process.env.NEXT_PUBLIC_HOST}/api/charts/audio?id=${chart.id}`
+                    url: `${process.env.NEXT_PUBLIC_HOST}api/charts/audio?id=${chart.id}`
                 },
                 "preview": {
+                    hash: "",
                     type: "LevelPreview",
-                    url: `${process.env.NEXT_PUBLIC_HOST}/api/charts/audio?id=${chart.id}`
+                    url: `${process.env.NEXT_PUBLIC_HOST}api/charts/audio?id=${chart.id}`
                 },
                 "data": {
+                    hash: "",
                     type: "LevelData",
-                    url: `${process.env.NEXT_PUBLIC_HOST}/api/charts/data?id=${chart.id}`
+                    url: `${process.env.NEXT_PUBLIC_HOST}api/charts/data?id=${chart.id}`
                 },
                 "useSkin": {
                     "useDefault": true
@@ -81,7 +85,8 @@ export default async function handler(
                         }
                     },
                     "configuration": {
-                        "url": `${process.env.NEXT_PUBLIC_HOST}/api/engine/config`,
+                        "hash": "d876c225d189da0d18799c8fce607a9326ca9096",
+                        "url": `${process.env.NEXT_PUBLIC_HOST}api/engine/config`,
                         "type": "EngineConfiguration"
                     },
                     "playData": {
