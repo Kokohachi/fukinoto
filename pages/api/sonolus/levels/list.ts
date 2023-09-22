@@ -45,12 +45,12 @@ export default async function handler(
         bgm: {
           hash: "",
           type: "LevelBgm",
-          url: `${process.env.NEXT_PUBLIC_HOST}api/charts/audio?id=${chart.id}`,
+          url: `https://huggingface.co/datasets/yasakoko/fukinoto-database/resolve/main/charts/${chart.id}/${chart.id}.mp3`,
         },
         preview: {
           hash: "",
           type: "LevelPreview",
-          url: `${process.env.NEXT_PUBLIC_HOST}api/charts/audio?id=${chart.id}`,
+          url: `https://huggingface.co/datasets/yasakoko/fukinoto-database/resolve/main/charts/${chart.id}/${chart.id}.mp3`,
         },
         data: {
           hash: "",
