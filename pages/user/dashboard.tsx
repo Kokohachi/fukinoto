@@ -96,7 +96,7 @@ export default function Dashboard() {
                   <Image
                     objectFit="cover"
                     maxW={{ base: "100%", sm: "200px" }}
-                    src={`${process.env.NEXT_PUBLIC_HOST}/api/charts/image/?id=${chart.id}`}
+                    src={`https://huggingface.co/datasets/yasakoko/fukinoto-database/resolve/main/charts/${chart.id}/${chart.id}.png`}
                     alt="Caffe Latte"
                   />
 

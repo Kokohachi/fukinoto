@@ -165,3 +165,51 @@ export function supabaseGetAllCharts() {
     return data;
   })
 }
+
+export async function _supabaseLikeChart(id: string) {
+  const user = await _supabaseGetUser();
+  if (!user) {
+    return null;
+  }
+  const uid = user.id;
+  const { data, error } = await supabase.from("liked").insert([
+    {
+      event_id: uid + "-" + id,
+      liked_by: uid,
+      chart_id: id,
+    },
+  ]);
+  if (error) {
+    return error as any;
+  }
+  if (data) {
+    return data;
+  }
+}
+
+export function supabaseLikeChart(id: string) {
+  return _supabaseLikeChart(id).then((data) => {
+    return data;
+  })
+}
+
+export async function _getLikedCharts() {
+  const user = await _supabaseGetUser();
+  if (!user) {
+    return null;
+  }
+  const uid = user.id;
+  const { data, error } = await supabase.from("liked").select("*").eq("liked_by", uid);
+  if (error) {
+    return error as any;
+  }
+  if (data) {
+    return data;
+  }
+}
+
+export function getLikedCharts() {
+  return _getLikedCharts().then((data) => {
+    return data;
+  })
+}

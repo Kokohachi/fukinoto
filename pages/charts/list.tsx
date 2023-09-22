@@ -1,4 +1,4 @@
-import { supabaseGetAllCharts, supabaseGetUser, supabaseGetUserCharts } from "@/hooks/supabase/auth";
+import { getLikedCharts, supabaseGetAllCharts, supabaseGetUser, supabaseGetUserCharts, supabaseLikeChart } from "@/hooks/supabase/auth";
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -59,6 +59,23 @@ export default function Dashboard() {
       setChartData(chartData);
     });
   }, [user?.id]);
+  const Like = async (id: string) => {
+    console.log(id);
+    const { data, error } = await supabaseLikeChart(id);
+    if (error) {
+      alert(error);
+    }
+    if (data) {
+      alert("いいね！しました！");
+    }
+    console.log(data);
+  };
+  const likeDisabled = async (id: string, uid: string) => {
+    if (uid === user?.id) {
+      return true;
+    }
+    return false;
+  }
   return (
     <div>
       <meta title="ダッシュボード" />
@@ -95,7 +112,7 @@ export default function Dashboard() {
                     objectFit="cover"
                     width={{ base: "100%", sm: "200px" }}
                     height={{ base: "100%", sm: "300px" }}
-                    src={`${process.env.NEXT_PUBLIC_HOST}/api/charts/image/?id=${chart.id}`}
+                    src={`https://huggingface.co/datasets/yasakoko/fukinoto-database/resolve/main/charts/${chart.id}/${chart.id}.png`}
                     alt="Caffe Latte"
                   />
 
@@ -127,6 +144,8 @@ export default function Dashboard() {
                         colorScheme="pink"
                         mb={2}
                         leftIcon={<BsHeartFill />}
+                        onClick={() => {Like(chart.id)}}
+                        isDisabled={likeDisabled(chart.id, chart.user)}
                       >
                         いいね！
                       </Button>
