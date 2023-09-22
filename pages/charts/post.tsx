@@ -295,6 +295,7 @@ export default function Post() {
     setSubStatus("譜面情報を登録しています...");
     console.log("nextloaded");
     const author_id = !useHID ? username : hid;
+
     const supabasecli = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || "",
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
@@ -323,6 +324,7 @@ export default function Post() {
     setUploaded(true);
     location.href = "/user/dashboard";
   };
+  const isBefore = new Date() < new Date("2023-09-23T15:00:00+09:00");
   return (
     <div>
       <Header />
@@ -741,6 +743,7 @@ export default function Post() {
                 <Stack>
                   <FormControl isRequired>
                     <FormLabel>企画参加</FormLabel>
+
                     <Select
                       placeholder="選択してください..."
                       id="event"
@@ -751,8 +754,12 @@ export default function Post() {
                         )
                       }
                       value={event}
-                    >
-                      <option value="1">ギミック譜面投稿祭</option>
+                    >{/*seperate by date*/}
+                    {isBefore? (
+                      <option value="1">ギミック譜面投稿祭プレイ部門</option>
+                    ):(
+                      <option value="2">ギミック譜面投稿祭観賞用部門</option>
+                    )}
                     </Select>
                   </FormControl>
                   <Text

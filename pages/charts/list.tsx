@@ -76,10 +76,10 @@ export default function Dashboard() {
           align="left"
         >
           <h3 style={{ fontSize: "2rem", fontWeight: "heavy" }}>
-            ダッシュボード
+            譜面一覧
           </h3>
           <Text fontSize="1.5rem" fontWeight="normal" mb={4}>
-            投稿譜面
+            プレイ部門
           </Text>
         </Stack>
         <Grid templateColumns="repeat(3, 1fr)" gap={6} maxW={ "100%" }>
