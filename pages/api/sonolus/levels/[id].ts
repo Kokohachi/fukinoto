@@ -81,10 +81,10 @@ export default async function handler(
           },
         },
         configuration: {
-          hash: "d876c225d189da0d18799c8fce607a9326ca9096",
-          url: `${process.env.NEXT_PUBLIC_HOST}api/engine/config`,
-          type: "EngineConfiguration",
-        },
+          "hash": "b0cddc8d80298a6d10fa8db560dcf35439495a02",
+          "url": "/sonolus/assets/backgrounds/BackgroundConfiguration",
+          "type": "BackgroundConfiguration"
+      },
         playData: {
           hash: "f084d8c08089081710204f6076b3a6265b1bac06",
           url: "https://cc.sevenc7c.com/sonolus/assets/engines/EnginePlayData",
