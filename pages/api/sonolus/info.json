@@ -1,10 +1,5 @@
 {
-    "title": "Chart Cyanvas",
-    "banner": {
-        "type": "ServerBanner",
-        "url": "/assets/banner.png",
-        "hash": "4df0fedbcbc6e86a104561716e366b0cf48e7ba2"
-    },
+    "title": "ふきのとう",
     "levels": {
         "items": [
             {
