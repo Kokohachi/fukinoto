@@ -23,7 +23,7 @@ export default async function handler(
                 return;
             };
             const item = {
-                "name": chart.id,
+                "name": "fknt-" + chart.id,
                 "title": chart.title,
                 "artists": chart.artist,
                 "author": chart.author+"@"+chart.author_id,
