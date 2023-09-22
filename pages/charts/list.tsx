@@ -70,7 +70,7 @@ export default function Dashboard() {
     }
     console.log(data);
   };
-  const likeDisabled = async (id: string, uid: string) => {
+  const likeDisabled = (id: string, uid: string) => {
     if (uid === user?.id) {
       return true;
     }
