@@ -149,3 +149,19 @@ export function supabaseUpdateChart(id: string, title: string, artist: string, a
     return data;
   })
 }
+
+export async function _supabaseGetAllCharts() {
+  const { data, error } = await supabase.from("charts").select("*");
+  if (error) {
+    return error as any;
+  }
+  if (data) {
+    return data;
+  }
+}
+
+export function supabaseGetAllCharts() {
+  return _supabaseGetAllCharts().then((data) => {
+    return data;
+  })
+}
