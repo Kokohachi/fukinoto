@@ -63,6 +63,12 @@ export default async function handler(
         useBackground: {
           useDefault: true,
         },
+        useParticle: {
+          useDefault: true,
+        },
+        useEffect: {
+          useDefault: true,
+        },
         engine: {
           author: "Nanashi. (Forked from Burrito)",
           background: {
