@@ -81,9 +81,9 @@ export default async function handler(
           },
         },
         configuration: {
-          "hash": "b0cddc8d80298a6d10fa8db560dcf35439495a02",
-          "url": "https://cc.sevenc7c.com/sonolus/assets/backgrounds/BackgroundConfiguration",
-          "type": "BackgroundConfiguration"
+          "hash": "673cf058eae71f76b4aed0ec85e71ade7f1a9161",
+          "url": "/sonolus/assets/engines/EngineConfiguration",
+          "type": "EngineConfiguration"
       },
         playData: {
           hash: "f084d8c08089081710204f6076b3a6265b1bac06",

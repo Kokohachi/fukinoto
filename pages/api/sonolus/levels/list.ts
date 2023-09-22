@@ -99,8 +99,8 @@ export default async function handler(
             },
           },
           configuration: {
-            hash: "d876c225d189da0d18799c8fce607a9326ca9096",
-            url: `${process.env.NEXT_PUBLIC_HOST}api/engine/config`,
+            hash: "673cf058eae71f76b4aed0ec85e71ade7f1a9161",
+            url: "/sonolus/assets/engines/EngineConfiguration",
             type: "EngineConfiguration",
           },
           playData: {
