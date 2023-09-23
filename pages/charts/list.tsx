@@ -65,6 +65,12 @@ export default function Dashboard() {
         if (a.like_count < b.like_count) return 1;
         return 0;
       });
+      //delete if chart.event is 2
+      sorted.forEach((chart: any, index: any) => {
+        if (chart.event == 2) {
+          sorted.splice(index, 1);
+        }
+      });
       setChartData(sorted);
     });
     const createLiked = async () => {
