@@ -755,11 +755,7 @@ export default function Post() {
                       }
                       value={event}
                     >{/*seperate by date*/}
-                    {isBefore? (
-                      <option value="1">ギミック譜面投稿祭プレイ部門</option>
-                    ):(
                       <option value="2">ギミック譜面投稿祭観賞用部門</option>
-                    )}
                     </Select>
                   </FormControl>
                   <Text
