@@ -206,6 +206,9 @@ export default function Post() {
           if (chart[0].user != user?.id) {
             location.href = "/user/dashboard";
           }
+          if (chart[0].event == "1"){
+            location.href = "/user/dashboard";
+          }
           console.log(chart[0].title);
           setTitle(chart[0].title);
           setArtist(chart[0].artist);
