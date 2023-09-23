@@ -172,7 +172,7 @@ export default function Dashboard() {
                       <Text py="1" display={"flex"} alignItems={"center"}>
                         <BsPencil display="inline" />
                         <Text as="span" pl={2}>
-                          {chart.author}
+                          {chart.author}@{chart.author_id}
                         </Text>
                       </Text>
                       <Text py="1" display={"flex"} alignItems={"center"}>
