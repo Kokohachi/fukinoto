@@ -190,6 +190,15 @@ export async function _supabaseLikeChart(id: string) {
       chart_id: id,
     },
   ]);
+  //get chart data
+  const chartData = await _supabaseGetChart(id);
+  if (!chartData) {
+    return null;
+  }
+  //get like count
+  const likeCount = chartData[0].like_count;
+  //update like count
+  const { data: data2, error: error2 } = await supabase.from("charts").update({ like_count: likeCount + 1 }).eq("id", id);
   if (error) {
     return error as PostgrestError;
   }

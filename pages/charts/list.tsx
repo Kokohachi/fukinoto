@@ -44,6 +44,7 @@ import {
   BsFillUnlockFill,
   BsCalendarDate,
   BsHeartFill,
+  BsHeart,
 } from "react-icons/bs";
 import Head from "next/head";
 import { REACT_LOADABLE_MANIFEST } from "next/dist/shared/lib/constants";
@@ -59,7 +60,12 @@ export default function Dashboard() {
       setUser(user);
     });
     supabaseGetAllCharts().then((chartData) => {
-      setChartData(chartData);
+      const sorted = chartData.sort((a: any, b: any) => {
+        if (a.like_count > b.like_count) return -1;
+        if (a.like_count < b.like_count) return 1;
+        return 0;
+      });
+      setChartData(sorted);
     });
     const createLiked = async () => {
       const likedCharts: any = await getLikedCharts();
@@ -102,6 +108,7 @@ export default function Dashboard() {
       return;
     }
     const status = await supabaseLikeChart(id);
+    location.reload();
   };
 
 
@@ -166,6 +173,12 @@ export default function Dashboard() {
                         <BsHash display="inline" />
                         <Text as="span" pl={2}>
                           {chart.id}
+                        </Text>
+                      </Text>
+                      <Text py="1" display={"flex"} alignItems={"center"}>
+                        <BsHeart display="inline" />
+                        <Text as="span" pl={2}>
+                          {chart.like_count}
                         </Text>
                       </Text>
                       <Button
