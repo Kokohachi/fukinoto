@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { PostgrestError, createClient } from "@supabase/supabase-js";
 import { UUID } from "crypto";
 
 const supabase = createClient(
@@ -172,15 +172,26 @@ export async function _supabaseLikeChart(id: string) {
     return null;
   }
   const uid = user.id;
+  //get date 4 digit
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  const second = date.getSeconds();
+
+  //make digit like 20230901
+  const dateDigit = year * 10000 + month * 100 + day * 1 + hour * 0.01 + minute * 0.0001 + second * 0.000001;
   const { data, error } = await supabase.from("liked").insert([
     {
-      event_id: uid + "-" + id,
+      event_id: uid + "-" + id + "-" + dateDigit,
       liked_by: uid,
       chart_id: id,
     },
   ]);
   if (error) {
-    return error as any;
+    return error as PostgrestError;
   }
   if (data) {
     return data;

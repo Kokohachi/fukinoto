@@ -2,6 +2,7 @@ import { getLikedCharts, supabaseGetAllCharts, supabaseGetUser, supabaseGetUserC
 import { useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { PostgrestError } from "@supabase/supabase-js";
 import {
   Box,
   Button,
@@ -45,9 +46,11 @@ import {
   BsHeartFill,
 } from "react-icons/bs";
 import Head from "next/head";
+import { REACT_LOADABLE_MANIFEST } from "next/dist/shared/lib/constants";
 export default function Dashboard() {
   const [user, setUser] = useState<any>(null);
   const [chartData, setChartData] = useState<any>(null);
+  const [likedCharts, setLikedCharts] = useState<any>([]);
   useEffect(() => {
     supabaseGetUser().then((user) => {
       if (!user) {
@@ -58,24 +61,50 @@ export default function Dashboard() {
     supabaseGetAllCharts().then((chartData) => {
       setChartData(chartData);
     });
+    const createLiked = async () => {
+      const likedCharts: any = await getLikedCharts();
+      let liledChartsIds = [] as any;
+      likedCharts.forEach((chart: any) => {
+        // dont if chart is liked_on yesterday (liked_on is JST)
+        const today = new Date();
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        const liked_on = new Date(chart.liked_on);
+        console.log(yesterday);
+        console.log(liked_on);
+        //get date digit
+        if (liked_on < today) return;
+        liledChartsIds.push(chart.chart_id);
+      });
+      // add owner charts
+      const userCharts: any = await supabaseGetUserCharts();
+      userCharts.forEach((chart: any) => {
+        liledChartsIds.push(chart.id);
+      });
+      setLikedCharts(liledChartsIds);
+      console.log(liledChartsIds);
+    };
+    createLiked();
   }, [user?.id]);
   const Like = async (id: string) => {
     console.log(id);
-    const { data, error } = await supabaseLikeChart(id);
-    if (error) {
-      alert(error);
+    const Likes = await getLikedCharts();
+    const TodaysLikes = Likes.filter((like: any) => {
+      const today = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+      const liked_on = new Date(like.liked_on);
+      return liked_on > yesterday;
+    });
+    console.log("today" ,TodaysLikes);
+    if (TodaysLikes.length >= 3) {
+      alert("今日のいいねの上限に達しました。");
+      return;
     }
-    if (data) {
-      alert("いいね！しました！");
-    }
-    console.log(data);
+    const status = await supabaseLikeChart(id);
   };
-  const likeDisabled = (id: string, uid: string) => {
-    if (uid === user?.id) {
-      return true;
-    }
-    return false;
-  }
+
+
   return (
     <div>
       <meta title="ダッシュボード" />
@@ -144,10 +173,10 @@ export default function Dashboard() {
                         colorScheme="pink"
                         mb={2}
                         leftIcon={<BsHeartFill />}
-                        onClick={() => {Like(chart.id)}}
-                        isDisabled={likeDisabled(chart.id, chart.user)}
+                        onClick={() => {Like(chart.id);}}
+                        isDisabled={likedCharts.includes(chart.id)}
                       >
-                        いいね！
+                        {likedCharts.includes(chart.id) ? "いいね済み" : "いいね"}
                       </Button>
                     </CardBody>
                   </HStack>
