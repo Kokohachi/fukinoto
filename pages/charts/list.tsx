@@ -67,7 +67,7 @@ export default function Dashboard() {
       });
       //delete if chart.event is 2
       sorted.forEach((chart: any, index: any) => {
-        if (chart.event == 2) {
+        if (chart.event == 1) {
           sorted.splice(index, 1);
         }
       });
@@ -138,7 +138,7 @@ export default function Dashboard() {
             譜面一覧
           </h3>
           <Text fontSize="1.5rem" fontWeight="normal" mb={4}>
-            プレイ部門
+            観賞用部門
           </Text>
         </Stack>
         <Grid templateColumns="repeat(3, 1fr)" gap={6} maxW={ "100%" }>
