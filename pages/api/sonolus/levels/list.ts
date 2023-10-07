@@ -96,9 +96,9 @@ export default async function handler(
             },
           },
           configuration: {
-            hash: "",
-            url: "https://huggingface.co/datasets/yasakoko/fukinoto-database/resolve/main/EngineConfiguration.json.gz",
-            type: "EngineConfiguration",
+            hash:"673cf058eae71f76b4aed0ec85e71ade7f1a9161",
+            url:"https://cc.sevenc7c.com/sonolus/assets/engines/EngineConfiguration",
+            type:"EngineConfiguration"
           },
           playData: {
             hash: "f084d8c08089081710204f6076b3a6265b1bac06",
