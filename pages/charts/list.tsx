@@ -68,7 +68,7 @@ export default function Dashboard() {
     return 0;
   });
 
-const filtered = sorted.filter((chart: any) => chart.event != 2);
+const filtered = sorted.filter((chart: any) => chart.event == 2);
 
 setChartData(filtered);
     });
