@@ -100,11 +100,7 @@ export default async function handler(
             url:"https://cc.sevenc7c.com/sonolus/assets/engines/EngineConfiguration",
             type:"EngineConfiguration"
           },
-          playData: {
-            hash: "f084d8c08089081710204f6076b3a6265b1bac06",
-            url: "https://cc.sevenc7c.com/sonolus/assets/engines/EnginePlayData",
-            type: "EnginePlayData",
-          },
+          playData: {hash:"5350cc4c82f661b77b785367c4dadc37ab7be756",url:"https://cc.sevenc7c.com/sonolus/assets/engines/EnginePlayData",type:"EnginePlayData"},
           tutorialData: {
             hash: "3faa75b305cc4e0acf0468fb326852f14026bfe7",
             url: "https://cc.sevenc7c.com/sonolus/assets/engines/EngineTutorialData",
