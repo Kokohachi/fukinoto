@@ -81,11 +81,15 @@ export default async function handler(
           },
         },
         configuration: {
-            hash:"673cf058eae71f76b4aed0ec85e71ade7f1a9161",
+            hash:"",
             url:"https://cc.sevenc7c.com/sonolus/assets/engines/EngineConfiguration",
             type:"EngineConfiguration"
-          },
-        playData: {hash:"5350cc4c82f661b77b785367c4dadc37ab7be756",url:"https://cc.sevenc7c.com/sonolus/assets/engines/EnginePlayData",type:"EnginePlayData"},
+        },
+        playData: {
+　　　　　　 hash:"",
+          url:"https://cc.sevenc7c.com/sonolus/assets/engines/EnginePlayData",
+          type:"EnginePlayData"
+        },
         tutorialData: {
           hash: "3faa75b305cc4e0acf0468fb326852f14026bfe7",
           url: "https://cc.sevenc7c.com/sonolus/assets/engines/EngineTutorialData",
