@@ -67,7 +67,7 @@ export default function Dashboard() {
       });
       //delete if chart.event is 2
       sorted.forEach((chart: any, index: any) => {
-        if (chart.event == 2) {
+        if (chart.event == 1) {
           sorted.splice(index, 1);
         }
       });
