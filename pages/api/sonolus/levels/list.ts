@@ -27,9 +27,6 @@ export default async function handler(
   };
   supabaseGetAllCharts().then((charts) => {
     charts.forEach((chart: any) => {
-      if (chart.event != "1") {
-        return;
-      }
       const item = {
         name: "fknt-" + chart.id,
         title: chart.title,
