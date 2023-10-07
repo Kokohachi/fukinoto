@@ -60,18 +60,17 @@ export default function Dashboard() {
       setUser(user);
     });
     supabaseGetAllCharts().then((chartData) => {
-      const sorted = chartData.sort((a: any, b: any) => {
-        if (a.like_count > b.like_count) return -1;
-        if (a.like_count < b.like_count) return 1;
-        return 0;
-      });
-      //delete if chart.event is 2
-      sorted.forEach((chart: any, index: any) => {
-        if (chart.event == 1) {
-          sorted.splice(index, 1);
-        }
-      });
-      setChartData(sorted);
+      const sorted = chartData
+  .slice() // Create a copy of the original array
+  .sort((a: any, b: any) => {
+    if (a.like_count > b.like_count) return -1;
+    if (a.like_count < b.like_count) return 1;
+    return 0;
+  });
+
+const filtered = sorted.filter((chart: any) => chart.event != 2);
+
+setChartData(filtered);
     });
     const createLiked = async () => {
       const likedCharts: any = await getLikedCharts();
