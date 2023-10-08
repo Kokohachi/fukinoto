@@ -60,12 +60,17 @@ export default function Dashboard() {
       setUser(user);
     });
     supabaseGetAllCharts().then((chartData) => {
-      const sorted = chartData.sort((a: any, b: any) => {
-        if (a.like_count > b.like_count) return -1;
-        if (a.like_count < b.like_count) return 1;
-        return 0;
-      });
-      setChartData(sorted);
+      const sorted = chartData
+  .slice() // Create a copy of the original array
+  .sort((a: any, b: any) => {
+    if (a.like_count > b.like_count) return -1;
+    if (a.like_count < b.like_count) return 1;
+    return 0;
+  });
+
+const filtered = sorted.filter((chart: any) => chart.event == 2);
+
+setChartData(filtered);
     });
     const createLiked = async () => {
       const likedCharts: any = await getLikedCharts();
@@ -132,7 +137,7 @@ export default function Dashboard() {
             譜面一覧
           </h3>
           <Text fontSize="1.5rem" fontWeight="normal" mb={4}>
-            プレイ部門
+            観賞用部門
           </Text>
         </Stack>
         <Grid templateColumns="repeat(3, 1fr)" gap={6} maxW={ "100%" }>
@@ -166,7 +171,7 @@ export default function Dashboard() {
                       <Text py="1" display={"flex"} alignItems={"center"}>
                         <BsPencil display="inline" />
                         <Text as="span" pl={2}>
-                          {chart.author}
+                          {chart.author}@{chart.author_id}
                         </Text>
                       </Text>
                       <Text py="1" display={"flex"} alignItems={"center"}>

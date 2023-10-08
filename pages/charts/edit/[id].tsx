@@ -182,6 +182,7 @@ export default function Post() {
   const [subStatus, setSubStatus] = useState("投稿を開始しています...");
   const [uploaded, setUploaded] = useState(false);
   const [showname, setShowname] = useState("");
+  const [isPlay, setIsPlay] = useState(false)
   const handleChange = (value: any) => setValue(value);
   useEffect(() => {
     supabaseGetUser().then((user) => {
@@ -205,6 +206,9 @@ export default function Post() {
           console.log(chart[0]);
           if (chart[0].user != user?.id) {
             location.href = "/user/dashboard";
+          }
+          if (chart[0].event == "1") {
+            setIsPlay(true)
           }
           console.log(chart[0].title);
           setTitle(chart[0].title);
@@ -330,6 +334,7 @@ export default function Post() {
               variant="outline"
               height="120px"
               onClick={() => handleUpload("chart")}
+              isDisabled={isPlay}
             >
               <Stack
                 maxW={{ lg: "2xl" }}
@@ -675,7 +680,8 @@ export default function Post() {
                       }
                       value={event}
                     >
-                      <option value="1">ギミック譜面投稿祭</option>
+                      <option value="1">ギミック譜面投稿祭プレイ部門</option>
+                      <option value="2">ギミック譜面投稿祭観賞用部門</option>
                     </Select>
                   </FormControl>
                   <Text

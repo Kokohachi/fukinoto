@@ -81,14 +81,14 @@ export default async function handler(
           },
         },
         configuration: {
-          "hash": "",
-          "url": "https://huggingface.co/datasets/yasakoko/fukinoto-database/resolve/main/EngineConfiguration.json.gz",
-          "type": "EngineConfiguration"
-      },
+            hash:"",
+            url:"https://cc.sevenc7c.com/sonolus/assets/engines/EngineConfiguration",
+            type:"EngineConfiguration"
+        },
         playData: {
-          hash: "f084d8c08089081710204f6076b3a6265b1bac06",
-          url: "https://cc.sevenc7c.com/sonolus/assets/engines/EnginePlayData",
-          type: "EnginePlayData",
+　　　　　　 hash:"",
+          url:"https://cc.sevenc7c.com/sonolus/assets/engines/EnginePlayData",
+          type:"EnginePlayData"
         },
         tutorialData: {
           hash: "3faa75b305cc4e0acf0468fb326852f14026bfe7",
