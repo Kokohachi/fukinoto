@@ -29,7 +29,7 @@
     "framer-motion": "^10.15.0",
     "fs": "^0.0.1-security",
     "nanoid": "^4.0.2",
-    "next": "13.4.12",
+    "next": "^13.5.4",
     "next-compose-plugins": "^2.2.1",
     "node-localstorage": "^3.0.5",
     "pjsekai-background-generator-pixi": "^1.0.3",
@@ -38,7 +38,7 @@
     "react-icons": "^4.10.1",
     "redux-persist": "^6.0.0",
     "sharp": "^0.32.5",
-    "sonolus-pjsekai-engine-extended": "github:sevenc-nanashi/sonolus-pjsekai-engine-extended#build",
+    "sonolus-pjsekai-engine-extended": "github:sevenc-nanashi/sonolus-pjsekai-engine-extended#c6ca4f2f69a0e5b726beeaf760794165aa297996",
     "type-fest": "^4.3.1",
     "typescript": "5.1.6"
   },
