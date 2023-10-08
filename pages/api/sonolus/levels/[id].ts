@@ -91,12 +91,12 @@ export default async function handler(
           type:"EnginePlayData"
         },
         tutorialData: {
-          hash: "3faa75b305cc4e0acf0468fb326852f14026bfe7",
+          hash: "",
           url: "https://cc.sevenc7c.com/sonolus/assets/engines/EngineTutorialData",
           type: "EngineTutorialData",
         },
         previewData: {
-          hash: "363433ea3d8c81d2356556872154f261791543db",
+          hash: "",
           url: "https://cc.sevenc7c.com/sonolus/assets/engines/EnginePreviewData",
           type: "EnginePreviewData",
         },
@@ -104,7 +104,7 @@ export default async function handler(
         particle: {
           author: "Sonolus",
           data: {
-            hash: "3d6c06680612cb880c8552672ac2999cfaeb49a8",
+            hash: "",
             url: "https://cc.sevenc7c.com/sonolus/assets/particles/ParticleData",
             type: "ParticleData",
           },
@@ -112,12 +112,12 @@ export default async function handler(
           subtitle: "From servers.sonolus.com/pjsekai",
           description: "Nothing changed.",
           texture: {
-            hash: "57b4bd504f814150dea87b41f39c2c7a63f29518",
+            hash: "",
             url: "https://cc.sevenc7c.com/sonolus/assets/particles/ParticleTexture",
             type: "ParticleTexture",
           },
           thumbnail: {
-            hash: "e5f439916eac9bbd316276e20aed999993653560",
+            hash: "",
             url: "https://cc.sevenc7c.com/sonolus/assets/particles/ParticleThumbnail",
             type: "ParticleThumbnail",
           },
@@ -127,7 +127,7 @@ export default async function handler(
         skin: {
           author: "Sonolus + Nanashi.",
           data: {
-            hash: "6c088bb3b463728b4791d7a0a56784eafb2e79e6",
+            hash: "",
             url: "https://cc.sevenc7c.com/sonolus/assets/skins/SkinData",
             type: "SkinData",
           },
@@ -135,12 +135,12 @@ export default async function handler(
           subtitle: "PJSekai Extended",
           description: "PjSekai + Trace notes",
           texture: {
-            hash: "20a964b06c77cee1cb381b6b90061d901f05e550",
+            hash: "",
             url: "https://cc.sevenc7c.com/sonolus/assets/skins/SkinTexture",
             type: "SkinTexture",
           },
           thumbnail: {
-            hash: "24faf30cc2e0d0f51aeca3815ef523306b627289",
+            hash: "",
             url: "https://cc.sevenc7c.com/sonolus/assets/skins/SkinThumbnail",
             type: "SkinThumbnail",
           },
